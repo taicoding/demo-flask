@@ -2,7 +2,7 @@ from flask import Flask, request, make_response, redirect, render_template
 
 app = Flask(__name__)
 
-todos = ["Todo 1", "Todo 2", "Todo 3"]
+todos = ["Jugar con el Michi", "Comprar comida del michi", "Amar al michi"]
 
 
 @app.route("/")

@@ -5,10 +5,13 @@
     <title>
         {% block title %}Flask Platzi | {% endblock %}
     </title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
 </head>
 
 <body>
-
+    <header>
+        {% include "navbar.html" %}
+    </header>
     {% block content %}{% endblock %}
 
 </body>

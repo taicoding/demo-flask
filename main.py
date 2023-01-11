@@ -1,3 +1,4 @@
+import unittest
 from flask import (
     Flask,
     request,
@@ -6,6 +7,7 @@ from flask import (
     render_template,
     session,
     url_for,
+    flash,
 )
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
@@ -29,6 +31,12 @@ class LoginForm(FlaskForm):
     username = StringField("Usuario", validators=[DataRequired()])
     password = PasswordField("Contraseña", validators=[DataRequired()])
     submit = SubmitField("Enviar")
+
+
+@app.cli.command()
+def test():
+    tests = unittest.TestLoader().discover("tests")
+    unittest.TextTestRunner().run(tests)
 
 
 @app.errorhandler(404)
@@ -63,6 +71,7 @@ def doxeando_ips():
     if login_form.validate_on_submit():
         username = login_form.username.data
         session["username"] = username
+        flash("Nombre de usuario registrado exitosamente")
         return redirect(url_for("index"))
     return render_template("hello.html", **context)
 

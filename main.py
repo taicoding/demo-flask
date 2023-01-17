@@ -9,28 +9,21 @@ from flask import (
     url_for,
     flash,
 )
-from flask_bootstrap import Bootstrap
-from flask_wtf import FlaskForm
-from wtforms.fields import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired
 
-app = Flask(__name__)
+from app import create_app
+from app.forms import LoginForm
+from app.firestore_services import get_users,get_todos
 
-bootstrap = Bootstrap(app)
-app.config.update(
-    DEBUG=False,
-    ENV="development",
-)
-app.config["SECRET_KEY"] = "SUPER SECRETO"
+
+app = create_app()
+
+
+
 
 
 todos = ["Jugar con el Michi", "Comprar comida del michi", "Amar al michi"]
 
 
-class LoginForm(FlaskForm):
-    username = StringField("Usuario", validators=[DataRequired()])
-    password = PasswordField("Contraseña", validators=[DataRequired()])
-    submit = SubmitField("Enviar")
 
 
 @app.cli.command()
@@ -57,22 +50,15 @@ def index():
     return response
 
 
-@app.route("/hello", methods=["GET", "POST"])
+@app.route("/hello", methods=["GET"])
 def doxeando_ips():
     user_ip = session.get("user_ip")
-    login_form = LoginForm()
     username = session.get("username")
     context = {
         "user_ip": user_ip,
-        "todos": todos,
-        "login_form": login_form,
+        "todos": get_todos(user_id = username),
         "username": username,
     }
-    if login_form.validate_on_submit():
-        username = login_form.username.data
-        session["username"] = username
-        flash("Nombre de usuario registrado exitosamente")
-        return redirect(url_for("index"))
     return render_template("hello.html", **context)
 
 

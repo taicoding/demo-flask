@@ -17,7 +17,7 @@ class MainTest(TestCase):
 
     def test_index_redirect(self):
         response = self.client.get(url_for("index"))
-        print(response.location)
+        #print(response.location)
         self.assertRedirects(response, url_for("doxeando_ips"))
 
     def test_hello_get(self):
@@ -29,14 +29,34 @@ class MainTest(TestCase):
         self.assert200(response)
 
     def test_hello_post(self):
+        '''
         fake_form = {
             "username": "fake-username",
             "password": "fake-password",
         }
-
+        '''
         response = self.client.post(
-            url_for("doxeando_ips"),
-            data=fake_form,
+            url_for("doxeando_ips")
         )
+        
         # print(response.location)
-        self.assertRedirects(response, url_for("index"))
+        self.assertTrue(response.status_code, 405)
+
+    def test_auth_blueprint_exists(self):
+        self.assertIn("auth", self.app.blueprints)
+    
+    def test_auth_login_get(self):
+        response = self.client.get(url_for("auth.login"))
+        self.assert200(response)
+    
+    def test_auth_login_template(self):
+        self.client.get(url_for("auth.login"))
+        self.assertTemplateUsed('login.html')
+    
+    def test_auth_login_post(self):
+        fake_form = {
+            "username": "fake-username",
+            "password": "fake-password",
+        }
+        response = self.client.post(url_for("auth.login"), data=fake_form)
+        self.assert_redirects(response, url_for('index'))

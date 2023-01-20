@@ -159,3 +159,4 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 secret/flask-platzi-374905-firebase-adminsdk-uo90w-9ed3aaa5b7.json
+.vscode/launch.json

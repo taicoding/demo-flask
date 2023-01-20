@@ -3,7 +3,7 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 
 project_id = 'flask-platzi-374905'
-credentials = credentials.Certificate('./secret/flask-platzi-374905-firebase-adminsdk-uo90w-9ed3aaa5b7.json')
+credentials = credentials.Certificate('key.json')
 firebase_admin.initialize_app(credentials,{'projectId':project_id})
 
 db = firestore.client()

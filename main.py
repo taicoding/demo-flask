@@ -79,4 +79,4 @@ def update(todo_id, done):
     return redirect(url_for("doxeando_ips"))
 
 if __name__ == "__main__":
-    app.run(port=8080, debug=True)
+    app.run(debug=True)
